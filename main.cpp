@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <Windows.h>
 #include <locale>
 
 using namespace std;
@@ -20,6 +21,7 @@ int main(void)
     sort(dat.begin(), dat.end(), cmp);
     printf("------------------\n");
     for (int i = 0; i < _N; i++) wprintf(L"%d위 : %d번\n", i + 1, dat[i]);
+    system("pause>nul");
     return 0;
 }
 
