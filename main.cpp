@@ -4,29 +4,57 @@
 
 using namespace std;
 
-int _N;
+int _N, _M;
 vector<int> dat;
 vector<vector<char>> cmpdat;
 
+void qsort();
+void qsort(int fr, int to);
 bool cmp(int a, int b);
 
 int main(void)
 {
+    srand(time(0));
     setlocale(LC_ALL, "");
 
     wprintf(L"후보 수 : ");
     scanf("%d", &_N);
+    wprintf(L"TOP 몇까지? : ");
+    scanf("%d", &_M);
     cmpdat.assign(_N, vector<char>(_N, 0));
     for (int i = 1; i <= _N; i++) dat.push_back(i);
-    sort(dat.begin(), dat.end(), cmp);
+    qsort();
     printf("------------------\n");
-    for (int i = 0; i < _N; i++) wprintf(L"%d위 : %d번\n", i + 1, dat[i]);
+    for (int i = 0; i < _M; i++) wprintf(L"%d위 : %d번\n", i + 1, dat[i]);
     system("pause>nul");
     return 0;
 }
 
+void qsort() { qsort(0, _N); }
+
+void qsort(int fr, int to)
+{
+    if (to - fr < 2) return;
+    random_shuffle(dat.begin() + fr, dat.begin() + to);
+
+    int pivot = fr;
+    int f = fr + 1, t = to - 1;
+    while (f <= t)
+    {
+        while (f <= t && cmp(dat[f], dat[pivot])) f++;
+        while (f <= t && cmp(dat[pivot], dat[t])) t--;
+        if (f <= t) swap(dat[f], dat[t]);
+        else swap(dat[pivot], dat[t]);
+    }
+    pivot = t;
+
+    if (pivot > 1) qsort(fr, pivot);
+    if (pivot < _M - 1) qsort(pivot + 1, to);
+}
+
 bool cmp(int a, int b)
 {
+    if (a == b) return -1;
     if (cmpdat[a - 1][b - 1]) return cmpdat[a - 1][b - 1] == 1;
     int c;
     while (true)
